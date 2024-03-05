@@ -44,5 +44,16 @@ func StoreFile(file multipart.File, header multipart.FileHeader) (*string, *help
 	// 2. Create file
 	// 3. Copy content in
 
+	if _, err := io.Copy(destination, file); err != nil {
+		if removeErr := os.Remove(destination.Name()); removeErr != nil {
+			return nil, &helper.Error{
+				Code:    http.StatusInternalServerError,
+				Message: fmt.Sprintf("File could not be saved & removed: %v - %v", err.Error(), removeErr.Error())}
+		}
+		return nil, &helper.Error{
+			Code:    http.StatusInternalServerError,
+			Message: fmt.Sprintf("File could not be saved & removed: %v", err.Error())}
+	}
+
 	return &uuid, nil
 }

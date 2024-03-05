@@ -15,7 +15,6 @@ type (
 	}
 )
 
-// POST dicom
 // @Summary      Upload a dicom file
 // @Description  Allows the user to upload a dicom file and returns a unique identifier
 // @Tags         dicom
