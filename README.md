@@ -1,7 +1,9 @@
 # Health Data Service
 
 Pocket Health Challenge
-TODO: Add details about the service
+TODO: 
+- Add details about the service
+- Clean test files
 
 ## Install
 
