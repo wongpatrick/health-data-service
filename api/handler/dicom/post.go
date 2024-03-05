@@ -2,10 +2,17 @@ package dicom
 
 import (
 	"fmt"
+	"health-data-service/api/services"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+)
+
+type (
+	DicomUploadResponse struct {
+		Id string `json:"id"`
+	}
 )
 
 // POST dicom
@@ -15,28 +22,29 @@ import (
 // @Accept       multipart/form-data
 // @Produce      json
 // @Param		 dicomFile formData file true "DICOM file to upload"
-// @Success      200  {object}  map[string]string
+// @Success      200  {object}  DicomUploadResponse
 // @Failure      400  {object}  httputil.HTTPError
 // @Failure      404  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
 // @Router       /v1/dicom/upload [post]
-func POST(c *gin.Context /*, uploader dicomFile.FileUploader*/) {
+func POST(c *gin.Context) {
 	log.Printf("POST v1/dicom/upload")
-	_, _, err := c.Request.FormFile("dicomFile")
+	file, header, err := c.Request.FormFile("dicomFile")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": fmt.Sprintf("Failed to read file - %v", err.Error()),
+			"error": fmt.Sprintf("Failed to upload file - %v", err.Error()),
 		})
 		return
 	}
-	log.Printf("FOUND FILE")
+	defer file.Close()
 
-	// created, postErr := services.PostTask(taskToCreate)
-	// if postErr != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{
-	// 		"message": postErr.Error(),
-	// 	})
-	// 	return
-	// }
-	c.JSON(http.StatusCreated, map[string]string{})
+	identifier, storeErr := services.StoreFile(file, *header)
+	if storeErr != nil {
+		c.JSON(storeErr.StatusCode(), gin.H{
+			"error": fmt.Sprintf("Failed to save file - %v", storeErr.Error()),
+		})
+		return
+	}
+	// TODO: Figure out the format for return
+	c.JSON(http.StatusCreated, DicomUploadResponse{Id: *identifier})
 }
