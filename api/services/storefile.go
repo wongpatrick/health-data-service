@@ -41,8 +41,6 @@ func StoreFile(file multipart.File, header multipart.FileHeader) (*string, *help
 
 	//TODO:
 	// 1. Figure out naming convention
-	// 2. Create file
-	// 3. Copy content in
 
 	if _, err := io.Copy(destination, file); err != nil {
 		if removeErr := os.Remove(destination.Name()); removeErr != nil {
