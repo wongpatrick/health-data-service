@@ -85,4 +85,4 @@ The REST API for a health data service is described below.
     Content-Type: image/png
     Transfer-Encoding: chunked
 
-<img src="" alt="" width="300">
+<img src="https://github.com/wongpatrick/health-data-service/blob/main/testfiles/testimage.png?raw=true" alt="" width="300">
