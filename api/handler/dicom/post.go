@@ -20,30 +20,33 @@ type (
 // @Tags         dicom
 // @Accept       multipart/form-data
 // @Produce      json
-// @Param		 dicomFile formData file true "DICOM file to upload"
+// @Param		 file formData file true "DICOM file to upload"
 // @Success      200  {object}  DicomUploadResponse
 // @Failure      400  {object}  httputil.HTTPError
 // @Failure      404  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
-// @Router       /v1/dicom/upload [post]
-func POST(c *gin.Context) {
-	log.Printf("POST v1/dicom/upload")
-	file, header, err := c.Request.FormFile("dicomFile")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": fmt.Sprintf("Failed to upload file - %v", err.Error()),
-		})
-		return
-	}
-	defer file.Close()
+// @Router       /v1/dicom [post]
+func POST(s services.DicomService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		log.Printf("POST v1/dicom")
+		file, header, err := c.Request.FormFile("file")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": fmt.Sprintf("Failed to upload file - %v", err.Error()),
+			})
+			return
+		}
+		defer file.Close()
 
-	identifier, storeErr := services.StoreFile(file, *header)
-	if storeErr != nil {
-		c.JSON(storeErr.StatusCode(), gin.H{
-			"error": fmt.Sprintf("Failed to save file - %v", storeErr.Error()),
-		})
-		return
+		identifier, storeErr := s.UploadFile(file, *header)
+		if storeErr != nil {
+			c.JSON(storeErr.StatusCode(), gin.H{
+				"error": fmt.Sprintf("Failed to save file - %v", storeErr.Error()),
+			})
+			return
+		}
+		// TODO: Figure out the format for return
+		c.JSON(http.StatusCreated, DicomUploadResponse{Id: *identifier})
 	}
-	// TODO: Figure out the format for return
-	c.JSON(http.StatusCreated, DicomUploadResponse{Id: *identifier})
+
 }

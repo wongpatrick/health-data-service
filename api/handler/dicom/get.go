@@ -1,6 +1,8 @@
 package dicom
 
 import (
+	"fmt"
+	"health-data-service/api/services"
 	"log"
 	"net/http"
 
@@ -8,8 +10,8 @@ import (
 )
 
 type (
-	DicomAtrributesParams struct {
-		Tag *string `form:"tag"`
+	GetAttributeParams struct {
+		Tag string `form:"tag" binding:"required"`
 	}
 )
 
@@ -18,16 +20,61 @@ type (
 // @Tags         dicom
 // @Accept       json
 // @Produce      json
-// @Param 		 id 	path 	string 					true   	"Identifier of the DICOM file"
-// @Param        tag    query   DicomAtrributesParams   true   	"Identifier of the uploaded DICOM file"
+// @Param 		 id 	path 	string					true   	"Identifier of the DICOM file"
+// @Param        tag    query   GetAttributeParams   	true   	"Identifier of the uploaded DICOM file"
 // @Success      200  {array}   map[string]string
 // @Failure      400  {object}  httputil.HTTPError
 // @Failure      404  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
-// @Router       /v1/dicom/{id} [get]
-func GET(c *gin.Context) {
-	log.Printf("GET DICOM HEADER")
-	fileID := c.Param("id")
+// @Router       /v1/dicom/{id}/attribute [get]
+func GET(s services.DicomService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		log.Printf("GET DICOM HEADER")
+		fileID := c.Param("id")
 
-	c.JSON(http.StatusOK, map[string]string{fileID: fileID})
+		var attributeParams GetAttributeParams
+		if err := c.ShouldBind(&attributeParams); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": fmt.Sprintf("Bad Request - %v", err.Error()),
+			})
+			return
+		}
+
+		attribute, err := s.ExtractHeaderAttribute(fileID, &attributeParams.Tag)
+		if err != nil {
+			c.JSON(err.StatusCode(), gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, attribute)
+	}
+}
+
+// @Summary      Convert DICOM file to a png image
+// @Description  Convert DICOM file to a png image.
+// @Tags         dicom
+// @Accept       json
+// @Produce      json
+// @Param 		 id 	path 	string	true	"Identifier of the DICOM file"
+// @Success      200  {array}   map[string]string
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      404  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /v1/dicom/{id}/image [get]
+func ConvertImage(s services.DicomService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		log.Printf("CONVERT IMAGE")
+		fileID := c.Param("id")
+		image, err := s.ConvertFileToImage(fileID, "")
+		if err != nil {
+			c.JSON(err.StatusCode(), gin.H{
+				"error": fmt.Sprintf("Failed to convert image - %v", err.Error()),
+			})
+			return
+		}
+
+		c.Data(http.StatusOK, "image/png", image)
+	}
 }

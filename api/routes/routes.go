@@ -2,6 +2,8 @@ package routes
 
 import (
 	"health-data-service/api/handler/dicom"
+	"health-data-service/api/repository"
+	"health-data-service/api/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +11,11 @@ import (
 func SetupRoutes(r *gin.Engine) {
 	v1 := r.Group("/v1")
 
-	//  routes
-	// v1.GET("/dicom", dicom.GET)
-	v1.POST("/dicom/upload", dicom.POST)
+	repo := repository.NewRepository()
+	dicomService := services.NewService(repo)
+
+	// dicom routes
+	v1.GET("/dicom/:id/attributes", dicom.GET(dicomService))
+	v1.GET("/dicom/:id/image", dicom.ConvertImage(dicomService))
+	v1.POST("/dicom", dicom.POST(dicomService))
 }
