@@ -102,7 +102,7 @@ The REST API for a health data service is described below. For easy access, feel
     - Bulk upload/query
     - Build out user and access control limiting DICOM file access to their own
     - Build out relational DB for storing user info
-    - Implement object storage such as S3
+    - Implement object storage such as Azure Blob Storage
 - Testing/Devops
     - Increase code coverage
     - Add and clean up mocks
