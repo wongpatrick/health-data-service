@@ -3,7 +3,6 @@ package dicom
 import (
 	"fmt"
 	"health-data-service/api/services"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,14 +21,13 @@ type (
 // @Produce      json
 // @Param 		 id 	path 	string					true   	"Identifier of the DICOM file"
 // @Param        tag    query   GetAttributeParams   	true   	"Identifier of the uploaded DICOM file"
-// @Success      200  {array}   map[string]string
+// @Success      200  {array}   dicom.Element
 // @Failure      400  {object}  httputil.HTTPError
 // @Failure      404  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
 // @Router       /v1/dicom/{id}/attribute [get]
 func GET(s services.DicomService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		log.Printf("GET DICOM HEADER")
 		fileID := c.Param("id")
 
 		var attributeParams GetAttributeParams
@@ -56,18 +54,17 @@ func GET(s services.DicomService) gin.HandlerFunc {
 // @Description  Convert DICOM file to a png image.
 // @Tags         dicom
 // @Accept       json
-// @Produce      json
+// @Produce      image/png
 // @Param 		 id 	path 	string	true	"Identifier of the DICOM file"
-// @Success      200  {array}   map[string]string
+// @Success      200  {string}  string  "PNG image content"
 // @Failure      400  {object}  httputil.HTTPError
 // @Failure      404  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
 // @Router       /v1/dicom/{id}/image [get]
 func ConvertImage(s services.DicomService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		log.Printf("CONVERT IMAGE")
 		fileID := c.Param("id")
-		image, err := s.ConvertFileToImage(fileID, "")
+		image, err := s.ConvertFileToImage(fileID)
 		if err != nil {
 			c.JSON(err.StatusCode(), gin.H{
 				"error": fmt.Sprintf("Failed to convert image - %v", err.Error()),

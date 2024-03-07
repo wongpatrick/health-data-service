@@ -13,7 +13,7 @@ import (
 )
 
 // TO DECIDE NAME
-func (d *dicomService) ConvertFileToImage(id string, fileType string) ([]byte, *helper.Error) {
+func (d *dicomService) ConvertFileToImage(id string) ([]byte, *helper.Error) {
 	dicomData, err := d.repository.FindFile(id)
 	if err != nil {
 		return nil, err

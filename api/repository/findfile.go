@@ -16,7 +16,7 @@ func (r *repository) FindFile(id string) (*dicom.Dataset, *helper.Error) {
 	if err != nil {
 		return nil, &helper.Error{
 			Code:    http.StatusInternalServerError,
-			Message: fmt.Sprintf("Could find file - %v", err.Error()),
+			Message: fmt.Sprintf("Could not parse file - %v", err.Error()),
 		}
 	}
 	return &dicomData, nil

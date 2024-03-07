@@ -32,7 +32,7 @@ func (d *dicomService) UploadFile(file multipart.File, header multipart.FileHead
 		}
 	}
 
-	uuid, err := fileCreation(&file)
+	uuid, err := fileCreation(localPath, &file)
 	if err != nil {
 		return nil, err
 	}
@@ -40,19 +40,17 @@ func (d *dicomService) UploadFile(file multipart.File, header multipart.FileHead
 	return uuid, nil
 }
 
-func fileCreation(file *multipart.File) (*string, *helper.Error) {
+func fileCreation(path string, file *multipart.File) (*string, *helper.Error) {
 	uuid := helper.GenerateUUID()
-	path := localPath + "/" + uuid + ".dcm"
+	fullPath := path + "/" + uuid + ".dcm"
 
-	destination, err := os.Create(path)
+	destination, err := os.Create(fullPath)
 	if err != nil {
 		return nil, &helper.Error{Code: http.StatusInternalServerError, Message: err.Error()}
 	}
-	defer destination.Close()
-
-	//TODO: Figure out naming convention
 
 	if _, err := io.Copy(destination, *file); err != nil {
+		destination.Close() // Did not use defer closed here since I cannot delete file if it's not closed
 		if removeErr := os.Remove(destination.Name()); removeErr != nil {
 			return nil, &helper.Error{
 				Code:    http.StatusInternalServerError,
@@ -62,5 +60,6 @@ func fileCreation(file *multipart.File) (*string, *helper.Error) {
 			Code:    http.StatusInternalServerError,
 			Message: fmt.Sprintf("File could not be saved & removed: %v", err.Error())}
 	}
+	destination.Close()
 	return &uuid, nil
 }

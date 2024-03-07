@@ -3,7 +3,6 @@ package dicom
 import (
 	"fmt"
 	"health-data-service/api/services"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +27,6 @@ type (
 // @Router       /v1/dicom [post]
 func POST(s services.DicomService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		log.Printf("POST v1/dicom")
 		file, header, err := c.Request.FormFile("file")
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -45,7 +43,6 @@ func POST(s services.DicomService) gin.HandlerFunc {
 			})
 			return
 		}
-		// TODO: Figure out the format for return
 		c.JSON(http.StatusCreated, DicomUploadResponse{Id: *identifier})
 	}
 

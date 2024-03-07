@@ -7,13 +7,7 @@ The creation of this service was for the pocket health challenge. The requiremen
 - Extract and return any DICOM header attributes based on a DICOM Tag as a query parameter
 - Convert the file into a PNG for browser-based viewing
 
-For parsing and processing the DICOM file, I used the following library given: `https://github.com/suyashkumar/dicom`
-
-TODO: 
-- Add details about the service
-- Figure out naming convention
-- Clean test files
-- Talk about your decisions like database etc
+For parsing and processing the DICOM file, the following library was used: `https://github.com/suyashkumar/dicom`
 
 ## Install
 
@@ -30,7 +24,7 @@ TODO:
     docker run -d -p 8080:8080 {id}
 
 ## REST API
-The REST API for a health data service is described below.
+The REST API for a health data service is described below. For easy access, feel free to use the [Postman](https://www.postman.com/) [collection](https://github.com/wongpatrick/health-data-service/blob/main/Health-Data-Service.postman_collection.json). 
 
 ## Upload and store a dicom file and returns the id for viewing
 ### Request
@@ -95,3 +89,27 @@ The REST API for a health data service is described below.
     Transfer-Encoding: chunked
 
 <img src="https://github.com/wongpatrick/health-data-service/blob/main/testfiles/testimage.png?raw=true" alt="" width="300">
+
+
+## Decisions
+- To keep things consistent for the challenge, I kept the vendor files in the repo for reproducible builds
+- Chose t
+
+## Next Steps
+- Features
+    - Bulk upload/query
+    - Build out user and access control limiting DICOM file access to their own
+    - Build out relational DB for storing user info
+    - Implement object storage such as S3
+- Testing
+    - Increase code coverage
+    - Add and clean up mocks
+    - Add Integration Tests
+    - Add E2E Test
+    - Add Health Check route
+    - Add better logging and monitoring
+
+
+Left to do: 
+- Clean test files
+- Talk about your decisions like database etc

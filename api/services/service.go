@@ -9,7 +9,7 @@ import (
 )
 
 type DicomService interface {
-	ConvertFileToImage(id string, fileType string) ([]byte, *helper.Error)
+	ConvertFileToImage(id string) ([]byte, *helper.Error)
 	ExtractHeaderAttribute(id string, tagQuery *string) (*dicom.Element, *helper.Error)
 	UploadFile(file multipart.File, header multipart.FileHeader) (*string, *helper.Error)
 }
