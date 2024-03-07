@@ -9,7 +9,6 @@ The creation of this service was for the pocket health challenge. The requiremen
 
 For parsing and processing the DICOM file, I used the following library given: `https://github.com/suyashkumar/dicom`
 
-
 TODO: 
 - Add details about the service
 - Figure out naming convention
@@ -58,7 +57,7 @@ The REST API for a health data service is described below.
 ### Request
 ```GET /v1/dicom/{id}/attribute ```
 
-    curl --location 'http://localhost:8080/v1/dicom/{id}/attribute?tag(0002,0001)'
+    curl --location 'http://localhost:8080/v1/dicom/{id}/attribute?tag=(0002,0001)'
 
 ### Response
 
@@ -84,7 +83,7 @@ The REST API for a health data service is described below.
 ### Request
 ```GET /v1/dicom/{id}/image ```
 
-    curl --location 'http://localhost:8080/v1/dicom/{id}/image'
+    curl --location -o 'http://localhost:8080/v1/dicom/{id}/image' -o image.png
 
 ### Response
 

@@ -14,8 +14,8 @@ func SetupRoutes(r *gin.Engine) {
 	repo := repository.NewRepository()
 	dicomService := services.NewService(repo)
 
-	// dicom routes
-	v1.GET("/dicom/:id/attributes", dicom.GET(dicomService))
+	// DICOM routes
+	v1.GET("/dicom/:id/attribute", dicom.GET(dicomService))
 	v1.GET("/dicom/:id/image", dicom.ConvertImage(dicomService))
 	v1.POST("/dicom", dicom.POST(dicomService))
 }
