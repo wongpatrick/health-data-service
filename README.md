@@ -1,13 +1,13 @@
 # Health Data Service
 
-Health Data Service is a API that would allows you to upload and view a dicom file.
+Health Data Service is a API that would allows you to upload and view a DICOM file.
 
 The creation of this service was for the pocket health challenge. The requirement was to build a HTTP microservice using Go to do the following:
-- Upload and store an DICOM file locally
-- Extract and return any DICOM header attribute based on a DICOM Tag as a query parameter
+- Upload and store a DICOM file locally
+- Extract and return any DICOM header attributes based on a DICOM Tag as a query parameter
 - Convert the file into a PNG for browser-based viewing
 
-For parsing and processing the dicom file, I used the following library given: `https://github.com/suyashkumar/dicom`
+For parsing and processing the DICOM file, I used the following library given: `https://github.com/suyashkumar/dicom`
 
 
 TODO: 
