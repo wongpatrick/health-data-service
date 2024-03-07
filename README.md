@@ -1,6 +1,11 @@
 # Health Data Service
 
+Health Data Service is a API that would allows you to upload and view a dicom file.
+
+
+
 Pocket Health Challenge
+
 TODO: 
 - Add details about the service
 - Figure out naming convention
@@ -28,7 +33,8 @@ The REST API for a health data service is described below.
 ### Request
 ```POST /v1/dicom ```
 
-    curl 'http://localhost:8080/v1/dicom'
+    curl --location 'http://localhost:8080/v1/dicom' \
+    --form 'file=@"/C:/Users/wongp/Documents/Projects/health-data-service/testfiles/PA000001/ST000001/SE000001/IM000001"'
 
 ### Response
 
