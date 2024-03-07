@@ -92,11 +92,6 @@ The REST API for a health data service is described below. For easy access, feel
 
 <img src="https://github.com/wongpatrick/health-data-service/blob/main/assets/image.png?raw=true" alt="" width="300">
 
-
-## Decisions
-- To keep things consistent for the challenge, I kept the vendor files in the repo for reproducible builds
-- Chose to use a service-repository pattern and made all the logic in the services. Deliberately made find file in a repo for the case when we want to move the file storage from local to an object storage.
-
 ## Next Steps
 - Features/Function
     - Bulk upload/query
