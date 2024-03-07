@@ -1,6 +1,6 @@
 package helper
 
-// Custom Error is a custom error type that implements the error interface.
+// Helper Error is a custom error type that implements the error interface.
 type Error struct {
 	Code    int    // Status code
 	Message string // Error message

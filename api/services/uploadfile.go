@@ -48,7 +48,8 @@ func fileCreation(path string, file *multipart.File) (*string, *helper.Error) {
 	}
 
 	if _, err := io.Copy(destination, *file); err != nil {
-		destination.Close() // Did not use defer closed here since I cannot delete file if it's not closed
+		// Originally had defer close above but ran into issues removing file since it is open
+		destination.Close()
 		if removeErr := os.Remove(destination.Name()); removeErr != nil {
 			return nil, &helper.Error{
 				Code:    http.StatusInternalServerError,

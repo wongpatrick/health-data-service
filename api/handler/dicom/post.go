@@ -43,6 +43,7 @@ func POST(s services.DicomService) gin.HandlerFunc {
 			})
 			return
 		}
+
 		c.JSON(http.StatusCreated, DicomUploadResponse{Id: *identifier})
 	}
 

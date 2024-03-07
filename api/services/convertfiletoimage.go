@@ -12,7 +12,6 @@ import (
 	"github.com/suyashkumar/dicom/pkg/tag"
 )
 
-// TO DECIDE NAME
 func (d *dicomService) ConvertFileToImage(id string) ([]byte, *helper.Error) {
 	dicomData, err := d.repository.FindFile(id)
 	if err != nil {
@@ -26,6 +25,7 @@ func (d *dicomService) ConvertFileToImage(id string) ([]byte, *helper.Error) {
 			Message: fmt.Sprintf("Could not find pixel data - %v", elementErr.Error()),
 		}
 	}
+
 	pixelDataInfo := dicom.MustGetPixelDataInfo(pixelDataElement.Value)
 
 	images := make([]image.Image, len(pixelDataInfo.Frames))
@@ -41,11 +41,10 @@ func (d *dicomService) ConvertFileToImage(id string) ([]byte, *helper.Error) {
 	}
 
 	var buffer bytes.Buffer
-	// add switch
 	if err := png.Encode(&buffer, images[0]); err != nil {
 		return nil, &helper.Error{
 			Code:    http.StatusInternalServerError,
-			Message: fmt.Sprintf("Could not convert to image - %v", err.Error()),
+			Message: fmt.Sprintf("Could not convert to png - %v", err.Error()),
 		}
 	}
 

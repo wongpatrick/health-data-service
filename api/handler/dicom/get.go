@@ -64,6 +64,7 @@ func GET(s services.DicomService) gin.HandlerFunc {
 func ConvertImage(s services.DicomService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fileID := c.Param("id")
+
 		image, err := s.ConvertFileToImage(fileID)
 		if err != nil {
 			c.JSON(err.StatusCode(), gin.H{

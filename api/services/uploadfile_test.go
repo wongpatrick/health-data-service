@@ -69,11 +69,10 @@ func TestUploadFile(t *testing.T) {
 				defer testFile.Close()
 			}
 
-			// Work around for file
-			type args struct {
+			type workAroundFile struct {
 				file multipart.File
 			}
-			testFileMap := args{
+			testFileMap := workAroundFile{
 				file: testFile,
 			}
 
@@ -88,7 +87,7 @@ func TestUploadFile(t *testing.T) {
 			}
 			assert.Equal(t, tt.err, actualErr)
 
-			// Clean file afterwards
+			// Clean Directory
 			if !tt.checkHeader && tt.filePath != "" {
 				if removeErr := os.RemoveAll(TestPath); removeErr != nil {
 					fmt.Println(removeErr)

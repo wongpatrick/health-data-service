@@ -11,6 +11,7 @@ import (
 func SetupRoutes(r *gin.Engine) {
 	v1 := r.Group("/v1")
 
+	// Dependency setup
 	repo := repository.NewRepository()
 	dicomService := services.NewService(repo)
 
