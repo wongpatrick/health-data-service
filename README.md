@@ -9,6 +9,8 @@ The creation of this service was for the pocket health challenge. The requiremen
 
 For parsing and processing the DICOM file, the following library was used: `https://github.com/suyashkumar/dicom`
 
+Feel free to use the `IM000001` file in `testfiles` directory.
+
 ## Install
 
     go mod vendor
@@ -88,28 +90,23 @@ The REST API for a health data service is described below. For easy access, feel
     Content-Type: image/png
     Transfer-Encoding: chunked
 
-<img src="https://github.com/wongpatrick/health-data-service/blob/main/testfiles/testimage.png?raw=true" alt="" width="300">
+<img src="https://github.com/wongpatrick/health-data-service/blob/main/assets/image.png?raw=true" alt="" width="300">
 
 
 ## Decisions
 - To keep things consistent for the challenge, I kept the vendor files in the repo for reproducible builds
-- Chose t
+- Chose to use a service-repository pattern and made all the logic in the services. Deliberately made find file in a repo for the case when we want to move the file storage from local to an object storage.
 
 ## Next Steps
-- Features
+- Features/Function
     - Bulk upload/query
     - Build out user and access control limiting DICOM file access to their own
     - Build out relational DB for storing user info
     - Implement object storage such as S3
-- Testing
+- Testing/Devops
     - Increase code coverage
     - Add and clean up mocks
     - Add Integration Tests
     - Add E2E Test
     - Add Health Check route
     - Add better logging and monitoring
-
-
-Left to do: 
-- Clean test files
-- Talk about your decisions like database etc
