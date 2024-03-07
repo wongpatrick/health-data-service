@@ -7,11 +7,10 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/suyashkumar/dicom"
 )
-
-const localPath = "./files/dicom"
 
 func (d *dicomService) UploadFile(file multipart.File, header multipart.FileHeader) (*string, *helper.Error) {
 	defer file.Close()
@@ -25,14 +24,14 @@ func (d *dicomService) UploadFile(file multipart.File, header multipart.FileHead
 	// Returning back to beginning of the file
 	file.Seek(0, io.SeekStart)
 
-	if err := os.MkdirAll(localPath, os.ModePerm); err != nil {
+	if err := os.MkdirAll(helper.LocalPath, os.ModePerm); err != nil {
 		return nil, &helper.Error{
 			Code:    http.StatusInternalServerError,
 			Message: fmt.Sprintf("Could not create directory - %v", err.Error()),
 		}
 	}
 
-	uuid, err := fileCreation(localPath, &file)
+	uuid, err := fileCreation(helper.LocalPath, &file)
 	if err != nil {
 		return nil, err
 	}
@@ -42,8 +41,7 @@ func (d *dicomService) UploadFile(file multipart.File, header multipart.FileHead
 
 func fileCreation(path string, file *multipart.File) (*string, *helper.Error) {
 	uuid := helper.GenerateUUID()
-	fullPath := path + "/" + uuid + ".dcm"
-
+	fullPath := filepath.Join(path, uuid+".dcm")
 	destination, err := os.Create(fullPath)
 	if err != nil {
 		return nil, &helper.Error{Code: http.StatusInternalServerError, Message: err.Error()}

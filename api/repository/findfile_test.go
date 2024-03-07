@@ -9,8 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// const testFilePath = "./files/dicom/test-file.dcm"
-
 func TestFindFile(t *testing.T) {
 	var test = map[string]struct {
 		id  string
@@ -24,7 +22,7 @@ func TestFindFile(t *testing.T) {
 			id: "test",
 			err: &helper.Error{
 				Code:    http.StatusInternalServerError,
-				Message: "Could not parse file - open ./files/dicom/test.dcm: The system cannot find the file specified.",
+				Message: "Could not parse file - open files\\dicom\\test.dcm: The system cannot find the file specified.",
 			},
 		},
 	}

@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const localTestFile = "../../testfiles/IM000001"
-const testPath = "../../files/dicom"
+const LocalTestFile = "../../testfiles/IM000001"
+const TestPath = "files"
 
 func TestUploadFile(t *testing.T) {
 	var test = map[string]struct {
@@ -23,7 +23,7 @@ func TestUploadFile(t *testing.T) {
 		err         *helper.Error
 	}{
 		"When valid file and valid header Return uuid": {
-			filePath:    localTestFile,
+			filePath:    LocalTestFile,
 			checkHeader: false,
 			header: multipart.FileHeader{
 				Size: 3642242,
@@ -31,7 +31,7 @@ func TestUploadFile(t *testing.T) {
 			err: nil,
 		},
 		"When valid path and invalid header Return error": {
-			filePath:    localTestFile,
+			filePath:    LocalTestFile,
 			checkHeader: true,
 			header: multipart.FileHeader{
 				Size: 1,
@@ -90,7 +90,7 @@ func TestUploadFile(t *testing.T) {
 
 			// Clean file afterwards
 			if !tt.checkHeader && tt.filePath != "" {
-				if removeErr := os.Remove(testPath + "/" + *uuid + ".dcm"); removeErr != nil {
+				if removeErr := os.RemoveAll(TestPath); removeErr != nil {
 					fmt.Println(removeErr)
 				}
 			}

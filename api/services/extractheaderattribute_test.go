@@ -60,7 +60,7 @@ func TestExtractHeaderAttribute(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			// SETUP
 			mockRepo := new(MockRepository)
-			dicomData, err := dicom.ParseFile(localTestFile, nil)
+			dicomData, err := dicom.ParseFile(LocalTestFile, nil)
 			if err != nil {
 				t.Fatal(err)
 			}

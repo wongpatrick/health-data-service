@@ -37,7 +37,7 @@ func TestConvertFileToImage(t *testing.T) {
 			var dicomData dicom.Dataset
 			var err error
 			if tt.isPixelData {
-				dicomData, err = dicom.ParseFile(localTestFile, nil)
+				dicomData, err = dicom.ParseFile(LocalTestFile, nil)
 				if err != nil {
 					t.Fatal(err)
 				}
